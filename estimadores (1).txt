@@ -1,0 +1,104 @@
+---
+title: "Estimadores"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+getwd()
+setwd ("C:/Users/Jasmín/Documents")
+datos<- read.csv("train.csv")
+names (datos) = c("temp", "fem")
+ly<-datos$fem
+lx<-datos$temp
+
+```
+
+Se a calcula la estimación de los parametros por MCO. 
+
+Utilizaremos la base de datos con 167 observaciones para calcular los paramteros por MCO. 
+
+```{r }
+#Estimacion de los parametros
+xbar <- mean(lx)
+ybar <- mean(ly)
+S.xx <- sum((lx - xbar)^2)
+S.xy <- sum((lx - xbar) * (ly - ybar))
+b0.hat <- ybar - xbar * S.xy / S.xx
+b1.hat <- S.xy / S.xx
+c(b0.hat, b1.hat)
+
+#Estimación de la varianza
+n <- length(lx)
+y.adj <- b0.hat + b1.hat * lx
+residuos <- ly - y.adj
+s2.hat <- sum(residuos^2) / (n - 2)
+s2.hat
+#Varianza de los estimadores
+vb0.hat <- (1/n + xbar^2/S.xx) * s2.hat
+vb1.hat <- s2.hat / S.xx
+c(vb0.hat, vb1.hat)
+#calculo de R2
+r<-with(datos,cor(ly, lx))
+R2<-r^2
+R2
+```
+
+
+El modelo descrito por estos parámetros es el siguiente:
+
+$log_{10}\left(P(T) \right) = 4.002\log_{10}(T) - 10.236$
+
+La varianza de los estimadores es: $\hat{V}(\hat{a})= 0.001$ y $\hat{V}(\hat{b})= 0.0002$ 
+
+
+El modelo tiene un buen ajuste ya que explica el 99% de la varianza de los datos.
+
+
+```{r, include=FALSE}
+
+datos1<- read.csv("test.csv")
+names (datos1) = c("temp1", "fem1")
+ly.1<-datos1$fem1
+lx.1<-datos1$temp1
+
+```
+
+Ahora se tomara la bases de datos con 42 observaciones para calcular los paramteros por MCO. 
+
+```{r }
+
+#Estimacion de los parametros
+xbar.1 <- mean(lx.1)
+ybar.1 <- mean(ly.1)
+S.xx.1 <- sum((lx.1 - xbar.1)^2)
+S.xy.1 <- sum((lx.1 - xbar.1) * (ly.1 - ybar.1))
+b0.hat.1 <- ybar.1 - xbar.1 * S.xy.1 / S.xx.1
+b1.hat.1 <- S.xy.1 / S.xx.1
+c(b0.hat.1 , b1.hat.1)
+#Estimación de la varianza
+n.1 <- length(lx.1)
+y.adj.1 <- b0.hat.1 + b1.hat.1 * lx.1
+residuos.1 <- ly.1 - y.adj.1
+s2.hat.1 <- sum(residuos.1^2) / (n.1 - 2)
+s2.hat.1
+#Varianza de los estimadores
+vb0.hat.1 <- (1/n.1 + xbar.1^2/S.xx.1) * s2.hat.1
+vb1.hat.1 <- s2.hat.1 / S.xx.1
+c(vb0.hat.1, vb1.hat.1)
+#calculo de R2
+r.1<-with(datos1,cor(ly.1, lx.1))
+R2.1<-r.1^2
+R2.1
+```
+
+
+El modelo descrito por estos parámetros es el siguiente:
+
+$log_{10}\left(P(T) \right) = 4.021\log_{10}(T) - 10.289$
+
+La varianza de los estimadores es: $\hat{V}(\hat{a})= 0.004$ y $\hat{V}(\hat{b})= 0.0005$ 
+
+El modelo tiene un buen ajuste ya que explica el 99% de la varianza de los datos.
+

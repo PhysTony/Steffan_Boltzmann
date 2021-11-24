@@ -1,0 +1,117 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{mathtools}
+
+
+\usepackage{amsfonts}
+
+
+\title{Proyecto Final de Estadística 2021}
+
+
+\author{Equipo1: Antonio, Hidaka Mimura Yuhara, Jasmin
+\\\\
+Prof. Nelson Muriel Torrero y Antonio Torres Lezama \\
+Maestría en Economía\\
+Centro de Investigación y Docencia Económicas\\}
+\date{Diciembre 2021}
+
+
+
+\begin{document}
+\maketitle
+
+
+
+\section{Introducción}
+\section{Descripción de los experimentos}
+\section{Marco Teórico}
+\qquad Para aclarecer qué tan preciso es la ecuación de la ley de Steffen Boltzman, usaremos el anánlis de la regresión simple. Es decir, vamos a ajustar un modelo de regresión lineal capaz de predecir que tan bien la variable fem (variable objetivo) es explicada por las variables explicativas 
+del valor registado de la temperatura en el experimento. \\
+La estimación del valor esperado de $y_i$ segun el modelo de regresión lineal es  
+\begin{equation}
+\hat{y_i}=a + bx_i \qquad donde\quad a,b\in\mathbb{R}
+\end{equation}\\
+Sin embargo. la ecuación de ley de steffen Boltzman no necesariamente muestra una función lineal; llevaremos a cabo una transformación logarítmica para estimar los parametros del modelo de regresión lineal y dar una interpretación del los valores estimados. 
+Entonces:\begin{align*}
+P(T)=Ae\sigma T^4=BT^4\\
+\Longleftrightarrow\log P(T)=\log (BT^4)\\\Longleftrightarrow\log P(T)=4\log(T)+\log(B)\\\Longleftrightarrow f(x_i)=ax_i+b
+\end{align*}
+El problema consiste en computar los dos valores a y b, y para comprender las relaciones cuantitativas entre el valor de fem y el de temperatura. El método de Mínimos Cuadrados Ordinarios MCO se basa en la minimación de las funcion de suma de cudrados de los residuos.  El valor $e^2$ es el error al cuadrado entre el i-ésimo valor observado y el i-ésimo valor esperado del modelo. Para precisar la predicción hay que minimizar este error al cuadrado  para asegurar que sea lo mínimo posible el error entre el resultado de la observación y el modelo de predicción. \\
+
+El error mínimo cuadrático se expresa de siguiente manera si usamos nociones. Supongamos que las variables \begin{math}X,Y\subseteq
+\mathbb{R}^2\end{math}, y sean \begin{math} x_i\in X\quad e\quad y_i\in Y \end{math}. 
+
+\begin{align}
+Q(a,b) = \sum^{n}e_i^2\\
+Q(a,b) = \sum^{n}(y_i-\hat{y_i}) ^2\\
+Q(a,b) = \sum^{n}(y_i-(a+bx_i))^2
+\end{align}
+
+Los estimadores del MCO son los valores de $a$ y $b$ que minimzan Q(a,b). Para minimizar $Q$ se encuentran los puntos criticos de la función y posteriormente se verifican las condiciones de segundo orden para decidir si se trata de un mínimo. 
+
+\begin{align}
+\frac{\partial}{\partial a} Q(a,b) = -2 \sum^{n} (y_i-a-bx_i)\\
+\frac{\partial}{\partial b} Q(a,b) = -2 \sum^{n} (y_i-a-bx_i) x_i\\
+\end{align}
+Al igualar a cero las derivadas anteriores, se obtiene el sistema
+\begin{align}
+an + b\sum^{n}x_i = \sum^{n} y_i\\
+a \sum^{n}x_i+ b \sum^{n} x_i^2= \sum^{n} x_i y_i
+\end{align}
+Al resover este sistema de ecuación podemos computar los valores de los estimadores $a$ y $b$. 
+\begin{align}
+a= \bar{y_n} - b \bar{x_n} \\
+b= \sum^{n} \frac{(xi-\bar{x_n})(yi-\bar{y_n})}{(xi-\bar{x_n})^2}=  \frac{Cov(X,Y)}{S^2_X}
+\end{align}
+
+Donde \begin{math}S^2_X \end{math} es desviación estándar de la variable X,  $\bar{x_n}$ y $\bar{y_n}$ son los valores promedio de las variables X e Y respectativamente.\\
+
+EL método de MCO no proporciona una estimación de $ \sigma^2$ pero, una estimación razonable es la siguiente
+$$\hat{\sigma}^2_{MCO}= \frac{1}{n-2} \sum^{n}(y_i-\hat{y_i}) ^2  $$
+
+
+El Teorema de Gauss-Markov ganrantiza que los estimadores EMCO son los mejores estimadores que se pueden obtener, dentro de los estimadores lineales insesgados. 
+La vararianza de los EMCO puede ser estimada de manera insesgada con 
+
+$$\hat{V}(\hat{a})=\frac{1}{n}+\frac{\bar{y_n}}{S^2_X} \hat{\sigma}^2_{MCO}$$
+$$\hat{V}(\hat{b})= \frac{\hat{\sigma}^2_{MCO}}{S^2_X}$$ 
+
+Ahora que obtengamos los valores a y b, podemos elaborar la función modelo de predicción para explicar relaciones entre fem y temperatura. En el siguiente sección vamos a observar el resultado de simulación de la regresión simple.\\
+
+El coeficiente de determinación del modelo RLS se conoce como $R^2$ y se utiliza como medida de ajuste del modelo de regresión y permite determinar qué tan bien el modelo describe el comportamiento de los datos. Valores cercanos a 1 indican un buen ajuste mientras que los valores cercanos a 0 indican un mal ajuste. 
+
+Para el caso particular del modelo RLS, existe una relación entre $R^2$ y el coeficiente de correlación de Pearson. 
+$$r= \frac{S_xx}{\sqrt{S_xx S_yy}} $$
+Se puede mostrar que existe una relacion entre el coeficiente de correlación $R^2$ y el coeficente de correlacion de Person
+
+$$r^2= R^2$$
+
+
+
+
+
+\section{Resultado de la simulación}
+
+
+
+\begin{figure}[htbp]
+\includegraphics[scale=0.8]{regresion fem vs temperatura.png}
+\caption{}
+\end{figure}
+
+
+
+
+\section{Bibliografías}
+\section{Bases de dato}
+
+
+
+
+\end{document}
